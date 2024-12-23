@@ -1,0 +1,14 @@
+.container{
+    /* background: #f9f9f9; */
+    margin-left: 15%;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.large-container{
+    margin-left: 0;
+    padding-left: 7%;
+}

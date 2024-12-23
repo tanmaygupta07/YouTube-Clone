@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     padding-left: 2%;
-    margin-top: 80px;
+    padding-top: 80px;
 }
 
 .shortcut-links img {
@@ -49,11 +49,11 @@
     display: none;
 }
 
-.subscribed-list h3 {
+.small-sidebar .subscribed-list h3 {
     display: none;
 }
 
-.sidebar hr {
+.small-sidebar hr {
     width: 50%;
     margin-bottom: 20px;
 }
