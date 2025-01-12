@@ -1,4 +1,4 @@
-.container{
+.container {
     /* background: #f9f9f9; */
     margin-left: 15%;
     padding-left: 2%;
@@ -8,7 +8,17 @@
     padding-bottom: 20px;
 }
 
-.large-container{
+.large-container {
     margin-left: 0;
     padding-left: 7%;
+}
+
+@media (max-width: 900px) {
+
+    .large-container,
+    .container {
+        margin-left: 0;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
 }

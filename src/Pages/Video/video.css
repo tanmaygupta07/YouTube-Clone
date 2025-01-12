@@ -1,4 +1,4 @@
-.play-container{
+.play-container {
     background: #f9f9f9;
     padding-left: 2%;
     padding-right: 2%;
@@ -7,4 +7,11 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+}
+
+@media(max-width: 900px) {
+    .play-container {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
 }
