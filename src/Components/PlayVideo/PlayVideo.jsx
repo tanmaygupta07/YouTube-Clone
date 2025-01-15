@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './PlayVideo.css';
-import video1 from '../../assets/video.mp4';
 import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
-import share from '../../assets/share.png';
+import download from '../../assets/download.png';
 import save from '../../assets/save.png';
-import jack from '../../assets/jack.png';
-import user_profile from '../../assets/user_profile.jpg';
 import { API_KEY, value_converter } from '../../data';
 import moment from 'moment';
-import { data, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const PlayVideo = () => {
 
@@ -18,6 +15,7 @@ const PlayVideo = () => {
     const [apiData, setApiData] = useState(null);
     const [channelData, setChannelData] = useState(null);
     const [commentData, setCommentData] = useState([]);
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
     const fetchVideoData = async () => {
         //Fetching videos data
@@ -49,32 +47,81 @@ const PlayVideo = () => {
         fetchOtherData();
     }, [apiData]);
 
+    const toggleDescription = () => {
+        setIsDescriptionExpanded((prev) => !prev);
+    };
+
+    const makeLinksClickable = (text) => {
+        const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+        return text.replace(urlRegex, (url) => {
+            const href = url.startsWith("http") ? url : `https://${url}`;
+            return `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color:rgb(6,95,212); text-decoration:none;">${url}</a>`;
+        });
+    };
+
+    const getDisplayDescription = () => {
+        if (!apiData) return 'Description Here';
+
+        const rawDescription = apiData.snippet.description;
+
+        const clickableDescription = makeLinksClickable(rawDescription);
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = clickableDescription;
+
+        const plainText = tempDiv.textContent || tempDiv.innerText;
+
+        if (isDescriptionExpanded || plainText.length <= 35) {
+            return clickableDescription.replace(/\n/g, '<br>');
+        } else {
+            const truncatedText = plainText.slice(0, 35);
+
+            const truncatedDiv = document.createElement('div');
+            truncatedDiv.textContent = truncatedText;
+
+            const truncatedWithBreaks = truncatedDiv.innerHTML.replace(/\n/g, '<br>');
+
+            return makeLinksClickable(truncatedWithBreaks);
+        }
+    };
+
     return (
         <div className="play-video">
             <iframe src={`https://www.youtube.com/embed/${videoId}?autoplay=1`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
             <h3>{apiData ? apiData.snippet.title : "Title Error"}</h3>
             <div className="play-video-info">
-                <p>{apiData ? value_converter(apiData.statistics.viewCount) : "View count error"} &bull; {apiData ? moment(apiData.snippet.publishedAt).fromNow() : ""}</p>
-                <div>
-                    <span><img src={like} alt="" />{apiData ? value_converter(apiData.statistics.likeCount) : 155}</span>
+                <div className="publisher">
+                    <img src={channelData ? channelData.snippet.thumbnails.default.url : ''} alt="" />
+                    <div>
+                        <p>{apiData ? apiData.snippet.channelTitle : ''}</p>
+                        <span>{channelData ? value_converter(channelData.statistics.subscriberCount) : ''} Subscribers</span>
+                    </div>
+                    <button>Subscribe</button>
+                </div>
+                <div className='action-buttons'>
+                    <span><img src={like} alt="" /><p>{apiData ? value_converter(apiData.statistics.likeCount) : 155}</p></span>
                     <span><img src={dislike} alt="" /></span>
-                    <span><img src={share} alt="" />Share</span>
+                    <span><img src={download} alt="" />Download</span>
                     <span><img src={save} alt="" />Save</span>
                 </div>
             </div>
-            <hr />
-            <div className="publisher">
-                <img src={channelData ? channelData.snippet.thumbnails.default.url : ''} alt="" />
-                <div>
-                    <p>{apiData ? apiData.snippet.channelTitle : ''}</p>
-                    <span>{channelData ? value_converter(channelData.statistics.subscriberCount) : ''} Subscribers</span>
-                </div>
-                <button>Subscribe</button>
-            </div>
+
             <div className="vid-description">
-                <p>{apiData ? apiData.snippet.description.slice(0, 250) : 'Description Here'}</p>
-                <hr />
-                <h4>{apiData ? value_converter(apiData.statistics.commentCount) : 102} Comments</h4>
+                <div className="vid-des-details">
+                    <p className='views-time'>{apiData ? apiData.statistics.viewCount + ' views' : "View count error"} &bull; {apiData ? moment(apiData.snippet.publishedAt).fromNow() : ""}</p>
+                    <p
+                        className="description"
+                        dangerouslySetInnerHTML={{
+                            __html: getDisplayDescription(),
+                        }}
+                    ></p>
+                    {apiData && apiData.snippet.description.split(' ').length > 35 && (
+                        <p className="read-more-btn" onClick={toggleDescription}>
+                            {isDescriptionExpanded ? 'Show Less' : '...more'}
+                        </p>
+                    )}
+                </div>
+                <h4 className='total-comments'>{apiData ? apiData.statistics.commentCount : 102} Comments</h4>
 
                 {commentData.map((item, index) => {
                     return (
@@ -82,7 +129,7 @@ const PlayVideo = () => {
                             <img src={item.snippet.topLevelComment.snippet.authorProfileImageUrl} alt="" />
                             <div>
                                 <h3>{item.snippet.topLevelComment.snippet.authorDisplayName} <span>{moment(item.snippet.topLevelComment.snippet.publishedAt).fromNow()}</span></h3>
-                                <p>{item.snippet.topLevelComment.snippet.textOriginal} </p>
+                                <p className='comment-text'>{item.snippet.topLevelComment.snippet.textOriginal} </p>
                                 <div className="comment-action">
                                     <img src={like} alt="" />
                                     <span>{value_converter(item.snippet.topLevelComment.snippet.likeCount)}</span>

@@ -10,8 +10,8 @@
 
 .play-video h3 {
     margin-top: 10px;
-    font-weight: 600;
-    font-size: 22px;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 .play-video-info {
@@ -19,38 +19,20 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 14px;
     color: #5a5a5a;
-}
-
-.play-video-info img {
-    width: 20px;
-    margin-right: 8px;
-}
-
-.play-video-info span {
-    display: inline-flex;
-    align-items: center;
-    margin-left: 15px;
-}
-
-.play-video hr {
-    border: 0;
-    height: 1px;
-    background: #ccc;
-    margin: 10px 0;
 }
 
 .publisher {
     display: flex;
     align-items: center;
-    margin-top: 20px;
 }
 
 .publisher div {
     flex: 1;
     line-height: 18px;
+    margin-right: 25px;
 }
 
 .publisher img {
@@ -61,40 +43,109 @@
 
 .publisher div p {
     color: #000;
-    font-weight: 600;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .publisher div span {
-    font-size: 13px;
+    font-size: 12px;
     color: #5a5a5a;
+    margin-left: 0;
 }
 
 .publisher button {
-    background: red;
+    background: black;
     color: #fff;
-    padding: 8px 30px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
     border: 0;
     outline: 0;
-    border-radius: 4px;
+    border-radius: 25px;
     cursor: pointer;
+
+    &:hover {
+        background-color: rgb(50, 50, 50);
+    }
+}
+
+.play-video-info .action-buttons img {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.play-video-info .action-buttons span {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.play-video-info .action-buttons span {
+    background-color: rgb(242, 242, 242);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgb(230, 230, 230);
+    }
+}
+
+.play-video-info .action-buttons span:nth-child(1) {
+    border-radius: 25px 0px 0px 25px;
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.play-video-info .action-buttons span:nth-child(1) p {
+    border-right: solid 1px #ccc;
+    padding-right: 12px;
+}
+
+.play-video-info .action-buttons span:nth-child(2) {
+    border-radius: 0px 25px 25px 0px;
+    margin-left: 0;
 }
 
 .vid-description {
-    padding-left: 55px;
     margin: 15px 0;
 }
 
 .vid-description p {
     font-size: 14px;
     margin-bottom: 5px;
-    color: #5a5a5a;
 }
 
-.vid-description h4 {
-    font-size: 14px;
-    color: #5a5a5a;
-    margin-top: 15px;
+.vid-des-details {
+    background-color: rgb(242, 242, 242);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.vid-des-details .views-time {
+    font-weight: 500;
+    color: rgb(15, 15, 15) !important;
+    margin-bottom: 10px;
+}
+
+.vid-des-details .description {
+    font-weight: 400;
+    color: rgb(19, 19, 19);
+}
+
+.vid-des-details .read-more-btn {
+    color: rgb(15, 15, 15);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.total-comments {
+    font-size: 20px;
+    margin-top: 30px;
+    color: rgb(15, 15, 15);
 }
 
 .comment {
@@ -111,15 +162,23 @@
 
 .comment h3 {
     margin-top: 0;
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 2px;
+    font-weight: 500;
+    line-height: 20px;
 }
 
 .comment h3 span {
     font-size: 12px;
-    color: #5a5a5a;
-    font-weight: 500;
+    color: #606060;
+    font-weight: 400;
     margin-left: 8px;
+}
+
+.comment .comment-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
 }
 
 .comment-action {
@@ -150,13 +209,17 @@
         height: 50vw;
     }
 
-    .vid-description {
-        padding-left: 0;
-    }
-
-    .play-video .play-video-info span {
+    .play-video .action-buttons span {
         margin-left: 0;
         margin-right: 15px;
         margin-top: 15px;
+    }
+
+    .action-buttons span:nth-child(1) {
+        margin-right: 0;
+    }
+
+    .vid-description {
+        padding-left: 0;
     }
 }
