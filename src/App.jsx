@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import Navbar from './Components/Navbar/Navbar';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import Navbar from './Components/Navbar/Navbar';
 import Home from './Pages/Home/Home';
 import Video from './Pages/Video/Video';
 
 const App = () => {
 	const location = useLocation();
-	const isVideoPage = location.pathname.startsWith('/video');
-	const [sidebar, setSidebar] = useState(!isVideoPage);
-	const [category, setCategory] = useState(0);
+	const [sidebar, setSidebar] = useState(true);
+
+	useEffect(() => {
+		const isVideoPage = location.pathname.startsWith('/video');
+		setSidebar(!isVideoPage);
+	}, [location.pathname]);
 
 	return (
 		<div>
 			<Navbar setSidebar={setSidebar} />
 			<Routes>
-				<Route path="/" element={<Home sidebar={sidebar} category={category} setCategory={setCategory} />} />
-				<Route path="/video/:categoryId/:videoId" element={<Video sidebar={sidebar} setSidebar={setSidebar} category={category} setCategory={setCategory} />} />
+				<Route path="/" element={<Home sidebar={sidebar} />} />
+				<Route
+					path="/video/:categoryId/:videoId"
+					element={<Video sidebar={sidebar} setSidebar={setSidebar} />}
+				/>
 			</Routes>
 		</div>
 	);

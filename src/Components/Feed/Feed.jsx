@@ -6,31 +6,47 @@ import moment from 'moment';
 
 const Feed = ({ category }) => {
     const [data, setData] = useState([]);
-    const [channelData, setChannelData] = useState({}); // Store channel data by channelId
+    const [channelData, setChannelData] = useState({});
 
     const fetchData = async () => {
-        const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=70&regionCode=IN&videoCategoryId=${category}&key=${API_KEY}`;
-        const response = await fetch(videoList_url);
-        const result = await response.json();
-        setData(result.items);
+        try {
+            const categoryId = category || '0';
 
-        const channelIds = [...new Set(result.items.map((item) => item.snippet.channelId))];
-        fetchChannelData(channelIds);
+            const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=70&regionCode=IN&videoCategoryId=${categoryId}&key=${API_KEY}`;
+
+            const response = await fetch(videoList_url);
+            if (!response.ok) throw new Error(`Failed to fetch videos: ${response.status}`);
+            const result = await response.json();
+
+            if (!result.items) throw new Error('No videos found.');
+            setData(result.items);
+
+            const channelIds = [...new Set(result.items.map((item) => item.snippet.channelId))];
+            await fetchChannelData(channelIds);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
-    const fetchChannelData = async (channelIds) => {
-        const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2Cstatistics&id=${channelIds.join(',')}&key=${API_KEY}`;
-        const response = await fetch(channelData_url);
-        const result = await response.json();
 
-        const channelMap = {};
-        result.items.forEach((channel) => {
-            channelMap[channel.id] = {
-                thumbnail: channel.snippet.thumbnails.default.url,
-                subscribers: value_converter(channel.statistics.subscriberCount),
-            };
-        });
-        setChannelData(channelMap);
+    const fetchChannelData = async (channelIds) => {
+        try {
+            const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2Cstatistics&id=${channelIds.join(',')}&key=${API_KEY}`;
+            const response = await fetch(channelData_url);
+            if (!response.ok) throw new Error(`Failed to fetch channel data: ${response.status}`);
+            const result = await response.json();
+
+            const channelMap = {};
+            result.items.forEach((channel) => {
+                channelMap[channel.id] = {
+                    thumbnail: channel.snippet.thumbnails.default.url,
+                    subscribers: value_converter(channel.statistics.subscriberCount),
+                };
+            });
+            setChannelData(channelMap);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     useEffect(() => {
@@ -39,21 +55,30 @@ const Feed = ({ category }) => {
 
     return (
         <div className="feed">
-            {data.map((item, index) => (
-                <Link to={`video/${item.snippet.categoryId}/${item.id}`} key={index} className="card">
-                    <img src={item.snippet.thumbnails.medium.url} alt={item.snippet.title} />
+            {data.map((item) => (
+                <Link
+                    to={`video/${item.snippet.categoryId || ''}/${item.id}`}
+                    key={item.id}
+                    className="card"
+                >
+                    <img
+                        src={item.snippet.thumbnails?.medium?.url || 'fallback-thumbnail.png'}
+                        alt={item.snippet.title || 'Video Thumbnail'}
+                    />
                     <div className="card-info">
                         <img
-                            src={channelData[item.snippet.channelId]?.thumbnail || ''}
-                            alt={item.snippet.channelTitle}
+                            src={
+                                channelData[item.snippet.channelId]?.thumbnail || 'fallback-channel.png'
+                            }
+                            alt={item.snippet.channelTitle || 'Channel Thumbnail'}
                             className="channel-thumbnail"
                         />
                         <div>
-                            <h2>{item.snippet.title}</h2>
-                            <h3>{item.snippet.channelTitle}</h3>
+                            <h2>{item.snippet.title || 'Untitled Video'}</h2>
+                            <h3>{item.snippet.channelTitle || 'Unknown Channel'}</h3>
                             <p>
-                                {value_converter(item.statistics.viewCount)} &bull;{' '}
-                                {moment(item.snippet.publishedAt).fromNow()}
+                                {value_converter(item.statistics?.viewCount || 0)} &bull;{' '}
+                                {moment(item.snippet.publishedAt).fromNow() || 'Unknown Time'}
                             </p>
                         </div>
                     </div>
