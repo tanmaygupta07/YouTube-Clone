@@ -1,5 +1,6 @@
 import React from 'react';
 import './Sidebar.css';
+import { Link } from 'react-router-dom';
 import home from '../../assets/home.png';
 import game_icon from '../../assets/game_icon.png';
 import automobiles from '../../assets/automobiles.png';
@@ -19,82 +20,82 @@ const Sidebar = ({ sidebar, category, setCategory }) => {
 	return (
 		<div className={`sidebar ${sidebar ? '' : 'small-sidebar'}`}>
 			<div className="shortcut-links">
-				<div className={`side-link ${category === 0 ? 'active' : ''}`} onClick={() => setCategory(0)}>
+				<Link to="/" className={`side-link ${category === 0 ? 'active' : ''}`} onClick={() => setCategory(0)}>
 					<img src={home} alt="" />
 					<p>Home</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 20 ? 'active' : ''}`} onClick={() => setCategory(20)}>
+				<Link to="/" className={`side-link ${category === 20 ? 'active' : ''}`} onClick={() => setCategory(20)}>
 					<img src={game_icon} alt="" />
 					<p>Gaming</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 2 ? 'active' : ''}`} onClick={() => setCategory(2)}>
+				<Link to="/" className={`side-link ${category === 2 ? 'active' : ''}`} onClick={() => setCategory(2)}>
 					<img src={automobiles} alt="" />
 					<p>Automobiles</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 17 ? 'active' : ''}`} onClick={() => setCategory(17)}>
+				<Link to="/" className={`side-link ${category === 17 ? 'active' : ''}`} onClick={() => setCategory(17)}>
 					<img src={sports} alt="" />
 					<p>Sports</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 24 ? 'active' : ''}`} onClick={() => setCategory(24)}>
+				<Link to="/" className={`side-link ${category === 24 ? 'active' : ''}`} onClick={() => setCategory(24)}>
 					<img src={entertainment} alt="" />
 					<p>Entertainment</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 28 ? 'active' : ''}`} onClick={() => setCategory(28)}>
+				<Link to="/" className={`side-link ${category === 28 ? 'active' : ''}`} onClick={() => setCategory(28)}>
 					<img src={tech} alt="" />
 					<p>Technology</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 10 ? 'active' : ''}`} onClick={() => setCategory(10)}>
+				<Link to="/" className={`side-link ${category === 10 ? 'active' : ''}`} onClick={() => setCategory(10)}>
 					<img src={music} alt="" />
 					<p>Music</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 22 ? 'active' : ''}`} onClick={() => setCategory(22)}>
+				<Link to="/" className={`side-link ${category === 22 ? 'active' : ''}`} onClick={() => setCategory(22)}>
 					<img src={blogs} alt="" />
 					<p>Blogs</p>
-				</div>
+				</Link>
 
-				<div className={`side-link ${category === 25 ? 'active' : ''}`} onClick={() => setCategory(25)}>
+				<Link to="/" className={`side-link ${category === 25 ? 'active' : ''}`} onClick={() => setCategory(25)}>
 					<img src={news} alt="" />
 					<p>News</p>
-				</div>
+				</Link>
 				<hr />
 			</div>
 
 			<div className="subscribed-list">
 				<h3>Subscribed</h3>
-				<div className="side-link">
+				<Link to="/" className="side-link">
 					<img src={jack} alt="" />
 					<p>PewDiePie</p>
-				</div>
+				</Link>
 
-				<div className="side-link">
+				<Link to="/" className="side-link">
 					<img src={simon} alt="" />
 					<p>Mr. Beast</p>
-				</div>
+				</Link>
 
-				<div className="side-link">
+				<Link to="/" className="side-link">
 					<img src={tom} alt="" />
 					<p>Justin Bieber</p>
-				</div>
+				</Link>
 
-				<div className="side-link">
+				<Link to="/" className="side-link">
 					<img src={megan} alt="" />
 					<p>5-Minute Crafts</p>
-				</div>
+				</Link>
 
-				<div className="side-link">
+				<Link to="/" className="side-link">
 					<img src={cameron} alt="" />
 					<p>Nas Daily</p>
-				</div>
+				</Link>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Sidebar
+export default Sidebar;
